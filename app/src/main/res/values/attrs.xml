@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="Circulo">
+        <attr name="radioCirculo" format="dimension" />
+        <attr name="colorCirculo" format="color"/>
+    </declare-styleable>
+
+
+</resources>
