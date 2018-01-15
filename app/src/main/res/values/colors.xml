@@ -3,4 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="circulo">#000000</color>
+    <color name="texto">#ffffff</color>
+    <color name="arco">#355687</color>
 </resources>

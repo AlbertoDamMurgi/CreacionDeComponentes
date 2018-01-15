@@ -4,6 +4,9 @@
     <declare-styleable name="Circulo">
         <attr name="radioCirculo" format="dimension" />
         <attr name="colorCirculo" format="color"/>
+        <attr name="porcentaje" format="integer"/>
+        <attr name="colorArco" format="color"/>
+
     </declare-styleable>
 
 

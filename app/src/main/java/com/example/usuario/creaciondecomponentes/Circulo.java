@@ -4,7 +4,10 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
+import android.graphics.drawable.shapes.OvalShape;
 import android.support.annotation.Dimension;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -16,10 +19,14 @@ import android.view.View;
 
 public class Circulo extends View {
 
-    private float radioCirculo;
+    private float radioCirculo,radioArco;
     private int colorCirculo;
-    private Paint mCirculoPaint, mShadowpaint;
+    private Paint mCirculoPaint,mArcPaint;
     private int centroX,centroY;
+    private int porcentaje;
+    private int colorArco;
+    private RectF oval,ovalprueba;
+
 
     public Circulo(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -31,7 +38,9 @@ public class Circulo extends View {
 
         try {
             radioCirculo = a.getDimension(R.styleable.Circulo_radioCirculo,150);
-            colorCirculo = a.getColor(R.styleable.Circulo_colorCirculo,getResources().getColor(R.color.colorPrimary));
+            colorCirculo = a.getColor(R.styleable.Circulo_colorCirculo,getResources().getColor(R.color.circulo));
+            porcentaje = a.getInteger(R.styleable.Circulo_porcentaje,0);
+            colorArco = a.getColor(R.styleable.Circulo_colorArco,getResources().getColor(R.color.arco));
         }finally {
             a.recycle();
         }
@@ -48,9 +57,12 @@ public class Circulo extends View {
         mCirculoPaint.setColor(getColorCirculo());
 
 
+        mArcPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mArcPaint.setStyle(Paint.Style.FILL);
+        mArcPaint.setColor(getColorArco());
 
-
-
+        oval = new RectF();
+        ovalprueba = new RectF();
     }
 
 
@@ -70,9 +82,17 @@ public class Circulo extends View {
         int usableWidth = w - (pl + pr);
         int usableHeight = h - (pt + pb);
 
-       radioCirculo = Math.min(usableWidth, usableHeight) / 2;
+       radioCirculo = (Math.min(usableWidth, usableHeight) / 2);
+
+       radioCirculo= (float) (radioCirculo*0.9);
        centroX = pl + (usableWidth / 2);
        centroY = pt + (usableHeight / 2);
+
+
+
+       oval.set(pl,pt,usableWidth-pr,usableHeight-pb);
+
+       //ovalprueba.set(pl+0F,pt+0F,usableWidth-pr,usableWidth-pb);
 
 
     }
@@ -81,11 +101,10 @@ public class Circulo extends View {
     protected void onDraw(Canvas canvas) {
 
         super.onDraw(canvas);
+        canvas.drawArc(oval,270,360,true,mArcPaint);
+        //canvas.drawArc(ovalprueba,270,360,true,mCirculoPaint);
 
-
-
-        canvas.drawCircle(centroX,centroY,getRadioCirculo(),mCirculoPaint);
-
+        canvas.drawCircle(centroX,centroY,radioCirculo,mCirculoPaint);
 
     }
 
@@ -106,6 +125,26 @@ public class Circulo extends View {
 
     public void setColorCirculo(int colorCirculo) {
         this.colorCirculo = colorCirculo;
+        invalidate();
+        requestLayout();
+    }
+
+    public int getPorcentaje() {
+        return porcentaje;
+    }
+
+    public void setPorcentaje(int porcentaje) {
+        this.porcentaje = porcentaje;
+        invalidate();
+        requestLayout();
+    }
+
+    public int getColorArco() {
+        return colorArco;
+    }
+
+    public void setColorArco(int colorArco) {
+        this.colorArco = colorArco;
         invalidate();
         requestLayout();
     }
