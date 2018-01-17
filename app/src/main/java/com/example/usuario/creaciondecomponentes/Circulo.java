@@ -21,7 +21,7 @@ public class Circulo extends View {
 
     private float radioCirculo,radioArco;
     private int colorCirculo;
-    private Paint mCirculoPaint,mArcPaint;
+    private Paint mCirculoPaint,mArcPaint,mTexto;
     private int centroX,centroY;
     private int porcentaje;
     private int colorArco;
@@ -61,6 +61,10 @@ public class Circulo extends View {
         mArcPaint.setStyle(Paint.Style.FILL);
         mArcPaint.setColor(getColorArco());
 
+        mTexto = new Paint(Paint.ANTI_ALIAS_FLAG);
+        mTexto.setColor(Color.WHITE);
+        mTexto.setTextSize(16);
+
         oval = new RectF();
         ovalprueba = new RectF();
     }
@@ -84,13 +88,18 @@ public class Circulo extends View {
 
        radioCirculo = (Math.min(usableWidth, usableHeight) / 2);
 
-       radioCirculo= (float) (radioCirculo*0.9);
+
        centroX = pl + (usableWidth / 2);
        centroY = pt + (usableHeight / 2);
 
 
 
-       oval.set(pl,pt,usableWidth-pr,usableHeight-pb);
+       oval.set(pl+(centroX-radioCirculo),pt+(centroY-radioCirculo),pr+(centroX+radioCirculo),pb+(centroY+radioCirculo));
+
+       radioCirculo= (float) (radioCirculo*0.9);
+
+       mTexto.setTextSize(radioCirculo/2);
+
 
        //ovalprueba.set(pl+0F,pt+0F,usableWidth-pr,usableWidth-pb);
 
@@ -101,11 +110,16 @@ public class Circulo extends View {
     protected void onDraw(Canvas canvas) {
 
         super.onDraw(canvas);
+
+        int xPos = (int) (canvas.getWidth() / 2.5);
+        int yPos = (int) ((canvas.getHeight() / 2) - ((mTexto.descent() + mTexto.ascent()) / 2)) ;
+
         canvas.drawArc(oval,270,360,true,mArcPaint);
         //canvas.drawArc(ovalprueba,270,360,true,mCirculoPaint);
 
         canvas.drawCircle(centroX,centroY,radioCirculo,mCirculoPaint);
 
+        canvas.drawText(getPorcentaje()+"%",xPos,yPos,mTexto);
     }
 
 
